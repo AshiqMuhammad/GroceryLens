@@ -1,0 +1,32 @@
+{
+  "metro": {
+    "display_name": "Metro Cash & Carry",
+    "address": "GT Road, Gujranwala",
+    "prices": {
+      "atta": 165, "chawal": 235, "rice": 235, "doodh": 210, "milk": 210,
+      "ghee": 640, "cheeni": 175, "sugar": 175, "namak": 40, "salt": 40,
+      "chai patti": 470, "tea": 470, "daal": 260, "lentils": 260,
+      "cooking oil": 610, "tel": 610, "sabun": 85, "soap": 85
+    }
+  },
+  "naheed": {
+    "display_name": "Naheed Supermarket",
+    "address": "Model Town, Gujranwala",
+    "prices": {
+      "atta": 158, "chawal": 225, "rice": 225, "doodh": 205, "milk": 205,
+      "ghee": 655, "cheeni": 178, "sugar": 178, "namak": 38, "salt": 38,
+      "chai patti": 460, "tea": 460, "daal": 250, "lentils": 250,
+      "cooking oil": 600, "tel": 600, "sabun": 90, "soap": 90
+    }
+  },
+  "alfatah": {
+    "display_name": "Al-Fatah",
+    "address": "Trust Plaza, Gujranwala",
+    "prices": {
+      "atta": 162, "chawal": 240, "rice": 240, "doodh": 200, "milk": 200,
+      "ghee": 630, "cheeni": 172, "sugar": 172, "namak": 42, "salt": 42,
+      "chai patti": 475, "tea": 475, "daal": 255, "lentils": 255,
+      "cooking oil": 615, "tel": 615, "sabun": 88, "soap": 88
+    }
+  }
+}

@@ -1,0 +1,332 @@
+/* ---------------------------------------------------------------
+   Sasta Kahan? — "receipt on a bazaar wood counter" design system
+   --------------------------------------------------------------- */
+
+:root {
+  --wood: #3b2a20;
+  --wood-dark: #2c1f18;
+  --paper: #f1e6c9;
+  --paper-shadow: #d9c79c;
+  --ink: #2b2118;
+  --ink-soft: #5c4c3a;
+  --stamp: #8c2f39;
+  --marigold: #d98f02;
+  --marigold-dark: #a56c01;
+  --line: rgba(43, 33, 24, 0.18);
+  --line-dashed: rgba(43, 33, 24, 0.35);
+  --good: #3f6b3f;
+
+  --font-display: "Anton", "Impact", sans-serif;
+  --font-body: "Inter", -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 32px 16px 64px;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      var(--wood) 0px,
+      var(--wood) 2px,
+      var(--wood-dark) 2px,
+      var(--wood-dark) 4px
+    );
+  background-size: 4px 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.counter {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- The receipt ---------- */
+
+.receipt {
+  width: 100%;
+  max-width: 440px;
+  transform: rotate(-0.6deg);
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.45));
+}
+
+.receipt__edge {
+  height: 14px;
+  background:
+    linear-gradient(135deg, transparent 50%, var(--paper) 50%),
+    linear-gradient(-135deg, transparent 50%, var(--paper) 50%);
+  background-size: 16px 16px;
+  background-repeat: repeat-x;
+}
+
+.receipt__edge--top { background-position: bottom; }
+.receipt__edge--bottom { transform: rotate(180deg); background-position: bottom; }
+
+.receipt__body {
+  background: var(--paper);
+  background-image: radial-gradient(rgba(43, 33, 24, 0.035) 1px, transparent 1px);
+  background-size: 3px 3px;
+  padding: 28px 26px 24px;
+}
+
+/* ---------- Header ---------- */
+
+.receipt__header { text-align: center; }
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 2.6rem;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+
+.tagline {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.rule {
+  border: none;
+  border-top: 2px solid var(--line);
+  margin: 20px 0;
+}
+
+.rule--dashed {
+  border-top: 1px dashed var(--line-dashed);
+}
+
+/* ---------- Form ---------- */
+
+.field-block { margin-bottom: 18px; }
+
+.field-block label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line-dashed);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.35);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--ink);
+  resize: vertical;
+}
+
+textarea:focus {
+  outline: 3px solid var(--marigold);
+  outline-offset: 1px;
+}
+
+.hint {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+/* ---------- Button (stamp) ---------- */
+
+.stampBtn {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--marigold);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.08s ease;
+}
+
+.stampBtn:hover { background: var(--marigold-dark); }
+.stampBtn:active { transform: scale(0.97); }
+
+.stampBtn:focus-visible {
+  outline: 3px solid var(--stamp);
+  outline-offset: 2px;
+}
+
+#status {
+  min-height: 20px;
+  margin: 14px 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--stamp);
+}
+
+#status.loading { color: var(--ink-soft); }
+
+/* ---------- Results: receipt lines ---------- */
+
+#results { margin-top: 6px; }
+
+.block-title {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 20px 0 10px;
+}
+
+.receipt-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  padding: 3px 0;
+}
+
+.receipt-line__name {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.receipt-line__leader {
+  flex: 1;
+  border-bottom: 1px dotted var(--line-dashed);
+  height: 0;
+  transform: translateY(-4px);
+}
+
+.receipt-line__value {
+  white-space: nowrap;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.store-row {
+  margin-bottom: 14px;
+}
+
+.store-row__meta {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin: 2px 0 4px;
+}
+
+.store-row.is-cheapest {
+  position: relative;
+  padding: 10px 10px 6px;
+  border: 1px solid var(--line);
+}
+
+/* The stamp */
+
+.stamp {
+  position: absolute;
+  top: -14px;
+  right: -6px;
+  transform: rotate(-9deg);
+  border: 3px solid var(--stamp);
+  border-radius: 50%;
+  color: var(--stamp);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  width: 66px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.05;
+  mix-blend-mode: multiply;
+  opacity: 0.88;
+  pointer-events: none;
+}
+
+.stamp::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--stamp);
+  border-radius: 50%;
+}
+
+.combo-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 2px solid var(--ink);
+  font-family: var(--font-mono);
+}
+
+.combo-total__label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.combo-total__value {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.unpriced-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem;
+}
+
+.unpriced-list li {
+  padding: 4px 0;
+  border-bottom: 1px dotted var(--line);
+  color: var(--ink-soft);
+}
+
+.match-tag {
+  font-size: 0.68rem;
+  color: var(--good);
+  margin-left: 4px;
+}
+
+.error-line {
+  font-size: 0.92rem;
+  color: var(--stamp);
+  font-weight: 600;
+}
+
+.disclaimer {
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 420px) {
+  .brand { font-size: 2.1rem; }
+  .receipt__body { padding: 22px 18px 18px; }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .stampBtn { transition: none; }
+}

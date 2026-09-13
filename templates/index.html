@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sasta Kahan? — Grocery Price Comparator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="counter">
+    <main class="receipt">
+      <div class="receipt__edge receipt__edge--top" aria-hidden="true"></div>
+
+      <div class="receipt__body">
+        <header class="receipt__header">
+          <h1 class="brand">Sasta&nbsp;Kahan?</h1>
+          <p class="tagline">Your grocery list, priced across every store you've added</p>
+        </header>
+
+        <div class="rule"></div>
+
+        <section class="field-block">
+          <label for="items">Grocery list</label>
+          <textarea id="items" rows="5" placeholder="atta&#10;chawal&#10;doodh&#10;ghee"></textarea>
+          <span class="hint">One item per line, or comma-separated</span>
+        </section>
+
+        <button id="findBtn" class="stampBtn">
+          <span>Compare prices</span>
+        </button>
+
+        <p id="status" role="status"></p>
+
+        <div id="results"></div>
+
+        <div class="rule rule--dashed"></div>
+
+        <p class="disclaimer">
+          Prices come from data/store_prices.json — edit that file to add
+          stores or update prices. Tricky item names may be matched with a
+          free AI lookup as a fallback.
+        </p>
+      </div>
+
+      <div class="receipt__edge receipt__edge--bottom" aria-hidden="true"></div>
+    </main>
+  </div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+

@@ -29,14 +29,14 @@ st.markdown("""
         background: #f7f9fc;
     }
 
-    /* Remove top padding */
+    /* Main container */
     .block-container {
         padding-top: 2rem;
         padding-bottom: 3rem;
         max-width: 1200px;
     }
 
-    /* Header */
+    /* Hero section */
     .hero {
         background: linear-gradient(
             135deg,
@@ -63,7 +63,7 @@ st.markdown("""
         opacity: 0.9;
     }
 
-    /* Section headings */
+    /* Section titles */
     .section-title {
         font-size: 25px;
         font-weight: 750;
@@ -72,7 +72,7 @@ st.markdown("""
         margin-bottom: 15px;
     }
 
-    /* Card */
+    /* General card */
     .card {
         background: white;
         padding: 25px;
@@ -89,7 +89,7 @@ st.markdown("""
         border-radius: 18px;
         border: 1px solid #e5eaf0;
         margin-bottom: 16px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.04);
     }
 
     .store-name {
@@ -110,7 +110,7 @@ st.markdown("""
         color: #0f766e;
     }
 
-    /* Best store */
+    /* Winner card */
     .winner {
         background: linear-gradient(
             135deg,
@@ -135,13 +135,13 @@ st.markdown("""
         color: #047857;
     }
 
-    /* Best combination */
+    /* Combination card */
     .combo {
         background: white;
         padding: 25px;
         border-radius: 20px;
         border: 1px solid #dfe7ef;
-        box-shadow: 0 5px 18px rgba(0,0,0,0.05);
+        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
         margin-top: 20px;
     }
 
@@ -157,6 +157,7 @@ st.markdown("""
         color: #8a94a3;
         font-size: 13px;
         padding-top: 35px;
+        padding-bottom: 20px;
     }
 
     /* Text area */
@@ -251,7 +252,6 @@ def compare_items(items):
                 )
 
         store_results.append({
-
             "name": store_info.get(
                 "display_name",
                 store_key
@@ -273,7 +273,9 @@ def compare_items(items):
         })
 
 
-    # Cheapest store first
+    # =====================================================
+    # CHEAPEST STORE FIRST
+    # =====================================================
 
     store_results.sort(
         key=lambda s: s["total"]
@@ -328,8 +330,11 @@ def compare_items(items):
             best_combo_total += best_price
 
 
-    return {
+    # =====================================================
+    # RETURN RESULTS
+    # =====================================================
 
+    return {
         "cheapest_single_store":
             store_results[0]
             if store_results
@@ -405,7 +410,7 @@ st.markdown(
 
 
 # =========================================================
-# BUTTON
+# COMPARE BUTTON
 # =========================================================
 
 compare_button = st.button(
@@ -420,11 +425,20 @@ compare_button = st.button(
 
 if compare_button:
 
+    # -----------------------------------------------------
+    # Convert input into list
+    # -----------------------------------------------------
+
     items = [
         item.strip()
         for item in grocery_text.splitlines()
         if item.strip()
     ]
+
+
+    # -----------------------------------------------------
+    # Validate input
+    # -----------------------------------------------------
 
     if not items:
 
@@ -436,7 +450,16 @@ if compare_button:
 
         try:
 
+            # -------------------------------------------------
+            # Run comparison
+            # -------------------------------------------------
+
             result = compare_items(items)
+
+
+            # -------------------------------------------------
+            # No stores
+            # -------------------------------------------------
 
             if result is None:
 
@@ -444,20 +467,23 @@ if compare_button:
                     "No stores are available."
                 )
 
+
             else:
 
                 st.success(
-                    f"Comparison completed for {len(items)} item(s)."
+                    f"Comparison completed for "
+                    f"{len(items)} item(s)."
                 )
 
 
-                # =================================================
-                # CHEAPEST STORE
-                # =================================================
+                # =============================================
+                # CHEAPEST SINGLE STORE
+                # =============================================
 
                 cheapest = result[
                     "cheapest_single_store"
                 ]
+
 
                 if cheapest:
 
@@ -467,6 +493,7 @@ if compare_button:
                         '</div>',
                         unsafe_allow_html=True
                     )
+
 
                     st.markdown(
                         f"""
@@ -497,14 +524,16 @@ if compare_button:
                     )
 
 
+                    # -----------------------------------------
                     # Matched items
+                    # -----------------------------------------
 
                     if cheapest[
                         "matched_items"
                     ]:
 
                         st.markdown(
-                            "#### 🛍️ Items found"
+                            "#### 🛍️ Items Found"
                         )
 
                         cols = st.columns(2)
@@ -513,30 +542,38 @@ if compare_button:
                             cheapest["matched_items"]
                         ):
 
-                            with cols[index % 2]:
+                            with cols[
+                                index % 2
+                            ]:
 
                                 st.markdown(
                                     f"""
                                     <div class="store-card">
 
-                                    <b>{item["you_typed"]}</b>
+                                        <b>
+                                            {item["you_typed"]}
+                                        </b>
 
-                                    <br>
+                                        <br><br>
 
-                                    Matched as:
-                                    {item["matched_to"]}
+                                        Matched as:
+                                        {item["matched_to"]}
 
-                                    <br><br>
+                                        <br><br>
 
-                                    <b>
-                                    Rs. {item["price"]:.2f}
-                                    </b>
+                                        <b>
+                                            Rs. {item["price"]:.2f}
+                                        </b>
 
                                     </div>
                                     """,
                                     unsafe_allow_html=True
                                 )
 
+
+                    # -----------------------------------------
+                    # Unmatched items
+                    # -----------------------------------------
 
                     if cheapest[
                         "unmatched_items"
@@ -552,9 +589,9 @@ if compare_button:
                         )
 
 
-                # =================================================
+                # =============================================
                 # BEST COMBINATION
-                # =================================================
+                # =============================================
 
                 st.markdown(
                     '<div class="section-title">'
@@ -563,17 +600,19 @@ if compare_button:
                     unsafe_allow_html=True
                 )
 
+
                 st.markdown(
                     """
                     <div class="card">
 
-                    Buy each item from the store
-                    where that item has the lowest price.
+                        Buy each item from the store
+                        where that item has the lowest price.
 
                     </div>
                     """,
                     unsafe_allow_html=True
                 )
+
 
                 if result["best_combo"]:
 
@@ -585,24 +624,31 @@ if compare_button:
                             f"""
                             <div class="store-card">
 
-                            🛒 <b>{item["item"]}</b>
+                                🛒
+                                <b>
+                                    {item["item"]}
+                                </b>
 
-                            &nbsp;&nbsp;→&nbsp;&nbsp;
+                                &nbsp;&nbsp;→&nbsp;&nbsp;
 
-                            🏪 {item["store"]}
+                                🏪
+                                {item["store"]}
 
-                            <span style="
-                                float:right;
-                                font-weight:700;
-                                color:#0f766e;
-                            ">
-                                Rs. {item["price"]:.2f}
-                            </span>
+                                <span style="
+                                    float:right;
+                                    font-weight:700;
+                                    color:#0f766e;
+                                ">
+
+                                    Rs. {item["price"]:.2f}
+
+                                </span>
 
                             </div>
                             """,
                             unsafe_allow_html=True
                         )
+
 
                     st.markdown(
                         f"""
@@ -613,7 +659,9 @@ if compare_button:
                             </div>
 
                             <div class="combo-total">
-                                Rs. {result["best_combo_total"]:.2f}
+                                Rs. {
+                                    result["best_combo_total"]
+                                :.2f}
                             </div>
 
                         </div>
@@ -622,9 +670,16 @@ if compare_button:
                     )
 
 
-                # =================================================
+                else:
+
+                    st.info(
+                        "No matching items found."
+                    )
+
+
+                # =============================================
                 # ALL STORES
-                # =================================================
+                # =============================================
 
                 st.markdown(
                     '<div class="section-title">'
@@ -633,23 +688,28 @@ if compare_button:
                     unsafe_allow_html=True
                 )
 
+
                 for index, store in enumerate(
                     result["all_stores"]
                 ):
 
+                    # First store is cheapest
                     if index == 0:
 
                         label = (
                             f"🏆 {store['name']} "
-                            f" — Rs. {store['total']:.2f}"
+                            f" — Rs. "
+                            f"{store['total']:.2f}"
                         )
 
                     else:
 
                         label = (
                             f"🏪 {store['name']} "
-                            f" — Rs. {store['total']:.2f}"
+                            f" — Rs. "
+                            f"{store['total']:.2f}"
                         )
+
 
                     with st.expander(label):
 
@@ -659,12 +719,17 @@ if compare_button:
                                 f"📍 {store['address']}"
                             )
 
+
+                        # -------------------------------------
+                        # Matched items
+                        # -------------------------------------
+
                         if store[
                             "matched_items"
                         ]:
 
                             st.markdown(
-                                "**Items found**"
+                                "**Items Found**"
                             )
 
                             for item in store[
@@ -672,10 +737,18 @@ if compare_button:
                             ]:
 
                                 st.write(
-                                    f"✓ {item['you_typed']} "
-                                    f"→ {item['matched_to']} "
-                                    f"— Rs. {item['price']:.2f}"
+                                    f"✓ "
+                                    f"{item['you_typed']} "
+                                    f"→ "
+                                    f"{item['matched_to']} "
+                                    f"— Rs. "
+                                    f"{item['price']:.2f}"
                                 )
+
+
+                        # -------------------------------------
+                        # Unmatched items
+                        # -------------------------------------
 
                         if store[
                             "unmatched_items"
@@ -689,6 +762,17 @@ if compare_button:
                                     ]
                                 )
                             )
+
+
+        # =====================================================
+        # ERROR HANDLING
+        # =====================================================
+
+        except Exception as e:
+
+            st.error(
+                f"Something went wrong: {e}"
+            )
 
 
 # =========================================================
